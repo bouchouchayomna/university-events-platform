@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Events - UniEvents</title>
+  <link rel="icon" href="images/icon.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      color: #333366;
+    }
+
+    /* Navbar Styles */
+    nav {
+      background-color: #333366;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .logo img {
+      height: 40px;
+      vertical-align: middle;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff6699;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 200px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #333366;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* My Events Section */
+    .my-events-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .event-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .event-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .event-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      max-height: 300px;
+    }
+
+    .event-card h3 {
+      margin-top: 0;
+      color: #333366;
+    }
+
+    .event-card p {
+      margin: 0.5rem 0;
+      color: #666;
+    }
+
+    .cancel-join {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff6699;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cancel-join:hover {
+      background-color: #e65c8e;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="/images/logo-removebg-preview.png" alt="UniEvents Logo">
+      </a>
+    </div>
+    <div class="nav-links">
+      <a href="feed.html">Feed</a>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">My Account</a>
+        <div class="dropdown-content" id="account-dropdown">
+          <!-- Dynamically populated with user data -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- My Events Section -->
+  <div class="my-events-container">
+    <h2>My Events</h2>
+    <div class="event-list" id="event-list">
+      <!-- Joined events will be dynamically added here -->
+    </div>
+  </div>
+
+ <script>
+  let events = JSON.parse(localStorage.getItem("events")) || [
+  {
+    id: 1,
+    name: "Tech Conference 2025",
+    date: "2025-12-15",
+    time: "10:00",
+    place: "Tunis",
+    description: "Join us for the biggest tech conference in Tunisia!",
+    image: "images/Driving Transformations_ Leading AI Conferences for Change-makers.jfif",
+    price: 50,
+    placesAvailable: 100, // Add placesAvailable
+    placesBought: 0, // Add placesBought
+  },
+  {
+    id: 2,
+    name: "Music Festival",
+    date: "2025-11-20",
+    time: "18:00",
+    place: "Sfax",
+    description: "Enjoy live music performances from top artists.",
+    image: "images/Premium Photo _ Concert crowd of Music fanclub hand using cellphone taking video record or Live stream.jfif",
+    price: 30,
+    placesAvailable: 200,
+    placesBought: 0,
+  },
+  {
+    id: 3,
+    name: "Startup Pitch Day",
+    date: "2025-12-01",
+    time: "09:00",
+    place: "Sousse",
+    description: "Watch innovative startups pitch their ideas.",
+    image: "images/Business Startup Expert_ Web3 Blockchain AI Crypto NFTs Metaverse Etc.jfif",
+    price: 20,
+    placesAvailable: 50,
+    placesBought: 0,
+  },
+  {
+    id: 4,
+    name: "Art Exhibition",
+    date: "2025-11-25",
+    time: "14:00",
+    place: "Gabes",
+    description: "Explore stunning artworks from local artists.",
+    image: "images/Tomorrow afternoon a group of talented poets….jfif",
+    price: 10,
+    placesAvailable: 80,
+    placesBought: 0,
+  },
+  {
+    id: 5,
+    name: "Food Festival",
+    date: "2025-12-10",
+    time: "12:00",
+    place: "Bizerte",
+    description: "Taste delicious dishes from around the world.",
+    image: "images/10 Food Festivals Every Foodie Dreams About Attending.jfif",
+    price: 15,
+    placesAvailable: 150,
+    placesBought: 0,
+  },
+  {
+    id: 6,
+    name: "Ramadan 2025",
+    date: "2025-03-01",
+    time: "05:00",
+    place: "Tunisia",
+    description: "Celebrate the holy month of Ramadan with community events, prayers, and iftar gatherings.",
+    image: "images/Ramadan kareem islamic background blue _ Premium AI-generated image.jfif",
+    price: 0,
+    placesAvailable: 500,
+    placesBought: 0,
+  },
+];
+
+
+  // Load joined events from localStorage
+  let joinedEvents = JSON.parse(localStorage.getItem("joinedEvents")) || [];
+
+  // Render Joined Events
+  function renderJoinedEvents() {
+  const eventList = document.getElementById("event-list");
+
+  // Filter events to only include joined events
+  const joinedEventList = events.filter((event) =>
+    joinedEvents.some((joinedEvent) => joinedEvent.eventId === event.id)
+  );
+
+  if (joinedEventList.length === 0) {
+    eventList.innerHTML = "<p>You haven't joined any events yet.</p>";
+  } else {
+    eventList.innerHTML = ""; // Clear existing events
+    joinedEventList.forEach((event) => {
+      const eventCard = document.createElement("div");
+      eventCard.className = "event-card";
+
+      // Find the number of tickets bought for this event
+      const joinedEvent = joinedEvents.find((e) => e.eventId === event.id);
+      const ticketsBought = joinedEvent ? joinedEvent.ticketsBought : 0;
+
+      eventCard.innerHTML = `
+        <img src="${event.image}" alt="${event.name}" class="event-img">
+        <h3>${event.name}</h3>
+        <p><strong>Date:</strong> ${event.date} at ${event.time}</p>
+        <p><strong>Place:</strong> ${event.place}</p>
+        <p><strong>Price:</strong> ${event.price} TND</p>
+        <p><strong>Tickets Bought:</strong> ${ticketsBought}</p>
+        <p><strong>Places Available:</strong> ${event.placesAvailable - event.placesBought}</p>
+        <p>${event.description}</p>
+        <button class="cancel-join" onclick="cancelJoin(${event.id})">Cancel Join</button>
+      `;
+
+      eventList.appendChild(eventCard);
+    });
+  }
+}
+
+  // Cancel Join Function
+  function cancelJoin(eventId) {
+  // Find the joined event
+  const joinedEventIndex = joinedEvents.findIndex((e) => e.eventId === eventId);
+
+  if (joinedEventIndex !== -1) {
+    // Find the event in the events array
+    const event = events.find((e) => e.id === eventId);
+
+    if (event) {
+      // Update placesBought
+      event.placesBought -= joinedEvents[joinedEventIndex].ticketsBought;
+
+      // Remove the event from joinedEvents
+      joinedEvents.splice(joinedEventIndex, 1);
+
+      // Save the updated events and joinedEvents arrays to localStorage
+      localStorage.setItem("events", JSON.stringify(events));
+      localStorage.setItem("joinedEvents", JSON.stringify(joinedEvents));
+
+      // Re-render the joined events list
+      renderJoinedEvents();
+    }
+  }
+}
+
+  // Check if user is logged in
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!loggedInUser) {
+    alert("Please log in to access your events.");
+    window.location.href = "login.html"; // Redirect to login page
+  } else {
+    console.log("Logged in user:", loggedInUser);
+
+    // Populate the My Account dropdown
+    const accountDropdown = document.getElementById("account-dropdown");
+    accountDropdown.innerHTML = `
+      <h3 style="text-align:center">${loggedInUser.firstName} ${loggedInUser.lastName}</h3>
+      <a href="#" onclick="changePassword()">Change Password</a>
+      <a href="#" onclick="logout()">Logout</a>
+    `;
+
+    // Render Joined Events
+    renderJoinedEvents();
+  }
+
+  // Logout Function
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html"; // Redirect to login page
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed - UniEvents</title>
+  <link rel="icon" href="images/icon.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      color: #333366;
+    }
+
+    /* Navbar Styles */
+    nav {
+      background-color: #333366;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .logo img {
+      height: 40px;
+      vertical-align: middle;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav-links button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #ff6699;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff6699;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 200px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #333366;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Feed Section */
+    .feed-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-filter input,
+    .search-filter select {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .search-filter button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff6699;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .search-filter button:hover {
+      background-color: #e65c8e;
+      transform: scale(1.05);
+    }
+
+    /* Event Cards */
+    .event-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .event-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .event-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      max-height: 300px;
+    }
+
+    .event-card h3 {
+      margin-top: 0;
+      color: #333366;
+    }
+
+    .event-card p {
+      margin: 0.5rem 0;
+      color: #666;
+    }
+
+    .event-card button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #333366;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .event-card button:hover {
+      background-color: #ff6699;
+      transform: scale(1.05);
+    }
+
+    .event-card button.joined {
+      background-color: #4CAF50; /* Green for joined events */
+      cursor: default;
+    }
+
+    .event-card button.joined:hover {
+      transform: none;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.356);
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .modal-content input,
+    .modal-content select,
+       .modal-content textarea {
+      width: 100%;
+      padding: 0.8rem 0px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #333366;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .modal-content button:hover {
+      background-color: #ff6699;
+      transform: scale(1.05);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="/images/logo-removebg-preview.png" alt="UniEvents Logo">
+      </a>
+    </div>
+    <div class="nav-links">
+      <button onclick="openModal()">Create Event</button>
+      <a href="my-events.html">My Events</a>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">My Account</a>
+        <div class="dropdown-content" id="account-dropdown">
+          <!-- Dynamically populated with user data -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<!-- Modal for Booking Tickets -->
+<div class="modal" id="booking-modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeBookingModal()">&times;</span>
+    <h2>Book Tickets</h2>
+    <form id="booking-form">
+      <label for="ticket-quantity">Number of Tickets:</label>
+      <input type="number" id="ticket-quantity" min="1" required>
+      <label for="payment-method">Payment Method:</label>
+      <select id="payment-method" required>
+        <option value="">Select Payment Method</option>
+        <option value="cash">Cash</option>
+        <option value="online">Online</option>
+      </select>
+      <button type="submit">Submit Booking</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal for Creating Events -->
+<div class="modal" id="create-event-modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <h2>Create New Event</h2>
+    <form id="create-event-form">
+      <input type="text" id="event-title" placeholder="Event Title" required>
+      <input type="date" id="event-date" required>
+      <input type="time" id="event-time" required>
+      <select id="event-place" required>
+        <option value="">Select Place</option>
+        <option value="Tunis">Tunis</option>
+        <option value="Sfax">Sfax</option>
+        <option value="Sousse">Sousse</option>
+        <option value="Gabes">Gabes</option>
+        <option value="Bizerte">Bizerte</option>
+      </select>
+      <input type="file" id="event-image" accept="image/*" required>
+      <input type="number" id="event-price" placeholder="Ticket Price (TND)" min="0" required>
+      <input type="number" id="event-places" placeholder="Places Available" min="1" required>
+      <textarea id="event-description" placeholder="Event Description" required></textarea>
+      <button type="submit">Create Event</button>
+    </form>
+  </div>
+</div>
+
+  <!-- Feed Section -->
+  <div class="feed-container">
+    <!-- Search and Filters -->
+    <div class="search-filter">
+      <input type="text" id="search" placeholder="Search events...">
+      <input type="date" id="date-filter">
+      <select id="place-filter">
+        <option value="">All Places</option>
+        <option value="Tunis">Tunis</option>
+        <option value="Sfax">Sfax</option>
+        <option value="Sousse">Sousse</option>
+        <option value="Gabes">Gabes</option>
+        <option value="Bizerte">Bizerte</option>
+      </select>
+      <button id="apply-filters">Apply Filters</button>
+    </div>
+
+    <!-- Event List -->
+    <div class="event-list" id="event-list">
+      <!-- Event cards will be dynamically added here -->
+    </div>
+  </div>
+
+<script>
+ // Load events from localStorage or use the default sample events
+let events = JSON.parse(localStorage.getItem("events")) || [
+  {
+    id: 1,
+    name: "Tech Conference 2025",
+    date: "2025-12-15",
+    time: "10:00",
+    place: "Tunis",
+    description: "Join us for the biggest tech conference in Tunisia!",
+    image: "images/Driving Transformations_ Leading AI Conferences for Change-makers.jfif",
+    price: 50,
+    placesAvailable: 100, // Add placesAvailable
+    placesBought: 0, // Add placesBought
+  },
+  {
+    id: 2,
+    name: "Music Festival",
+    date: "2025-11-20",
+    time: "18:00",
+    place: "Sfax",
+    description: "Enjoy live music performances from top artists.",
+    image: "images/Premium Photo _ Concert crowd of Music fanclub hand using cellphone taking video record or Live stream.jfif",
+    price: 30,
+    placesAvailable: 200,
+    placesBought: 0,
+  },
+  {
+    id: 3,
+    name: "Startup Pitch Day",
+    date: "2025-12-01",
+    time: "09:00",
+    place: "Sousse",
+    description: "Watch innovative startups pitch their ideas.",
+    image: "images/Business Startup Expert_ Web3 Blockchain AI Crypto NFTs Metaverse Etc.jfif",
+    price: 20,
+    placesAvailable: 50,
+    placesBought: 0,
+  },
+  {
+    id: 4,
+    name: "Art Exhibition",
+    date: "2025-11-25",
+    time: "14:00",
+    place: "Gabes",
+    description: "Explore stunning artworks from local artists.",
+    image: "images/Tomorrow afternoon a group of talented poets….jfif",
+    price: 10,
+    placesAvailable: 80,
+    placesBought: 0,
+  },
+  {
+    id: 5,
+    name: "Food Festival",
+    date: "2025-12-10",
+    time: "12:00",
+    place: "Bizerte",
+    description: "Taste delicious dishes from around the world.",
+    image: "images/10 Food Festivals Every Foodie Dreams About Attending.jfif",
+    price: 15,
+    placesAvailable: 150,
+    placesBought: 0,
+  },
+  {
+    id: 6,
+    name: "Ramadan 2025",
+    date: "2025-03-01",
+    time: "05:00",
+    place: "Tunisia",
+    description: "Celebrate the holy month of Ramadan with community events, prayers, and iftar gatherings.",
+    image: "images/Ramadan kareem islamic background blue _ Premium AI-generated image.jfif",
+    price: 0,
+    placesAvailable: 500,
+    placesBought: 0,
+  },
+];
+
+// User's Joined Events
+let joinedEvents = JSON.parse(localStorage.getItem("joinedEvents")) || [];
+
+// Render Events
+function renderEvents(filteredEvents) {
+  const eventList = document.getElementById("event-list");
+  eventList.innerHTML = ""; // Clear existing events
+
+  filteredEvents.forEach((event) => {
+    const eventCard = document.createElement("div");
+    eventCard.className = "event-card";
+
+    const isJoined = joinedEvents.includes(event.id);
+ const availablePlaces = event.placesAvailable - event.placesBought;
+eventCard.innerHTML = `
+      <img src="${event.image}" alt="${event.name}" class="event-img">
+      <h3>${event.name}</h3>
+      <p><strong>Date:</strong> ${event.date} at ${event.time}</p>
+      <p><strong>Place:</strong> ${event.place}</p>
+      <p><strong>Price:</strong> ${event.price} TND</p>
+      <p><strong>Places Available:</strong> ${availablePlaces}</p>
+      <p>${event.description}</p>
+      ${
+        availablePlaces === 0
+          ? `<button class="joined" disabled>Complete</button>`
+          : `<button class="${isJoined ? "joined" : ""}" onclick="openBookingModal(${event.id})">
+              ${isJoined ? "Joined" : "Join Event"}
+            </button>`
+      }
+    `;
+    eventList.appendChild(eventCard);
+  });
+}
+
+// Open Booking Modal
+let currentEventId = null;
+
+function openBookingModal(eventId) {
+  currentEventId = eventId;
+  document.getElementById("booking-modal").style.display = "flex";
+}
+
+// Close Booking Modal
+function closeBookingModal() {
+  document.getElementById("booking-modal").style.display = "none";
+}
+
+// Handle Booking Form Submission
+document.getElementById("booking-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const ticketQuantity = parseInt(document.getElementById("ticket-quantity").value);
+  const paymentMethod = document.getElementById("payment-method").value;
+
+  if (!currentEventId) return;
+
+  // Find the event
+  const event = events.find((e) => e.id === currentEventId);
+
+  if (!event) return;
+
+  // Check if there are enough places available
+  const availablePlaces = event.placesAvailable - event.placesBought;
+
+  if (ticketQuantity > availablePlaces) {
+    alert(`Only ${availablePlaces} places are available. You cannot book ${ticketQuantity} tickets.`);
+    return;
+  }
+
+  // Update placesBought
+  event.placesBought += ticketQuantity;
+
+  // Update joinedEvents
+  const joinedEventIndex = joinedEvents.findIndex((e) => e.eventId === currentEventId);
+
+  if (joinedEventIndex === -1) {
+    // Add the event to joinedEvents with the number of tickets bought
+    joinedEvents.push({ eventId: currentEventId, ticketsBought: ticketQuantity });
+  } else {
+    // Update the number of tickets bought for the event
+    joinedEvents[joinedEventIndex].ticketsBought += ticketQuantity;
+  }
+
+  // Save the updated events and joinedEvents arrays to localStorage
+  localStorage.setItem("events", JSON.stringify(events));
+  localStorage.setItem("joinedEvents", JSON.stringify(joinedEvents));
+
+  // Re-render events to update the UI
+  renderEvents(events);
+
+  // Close the booking modal
+  closeBookingModal();
+
+  // Clear the form
+  document.getElementById("booking-form").reset();
+});
+
+// Handle Create Event Form Submission
+document.getElementById("create-event-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const eventTitle = document.getElementById("event-title").value;
+  const eventDate = document.getElementById("event-date").value;
+  const eventTime = document.getElementById("event-time").value;
+  const eventPlace = document.getElementById("event-place").value;
+  const eventImageFile = document.getElementById("event-image").files[0];
+  const eventPrice = document.getElementById("event-price").value;
+  const eventPlaces = document.getElementById("event-places").value;
+  const eventDescription = document.getElementById("event-description").value;
+
+  // Validate date and time
+  const eventDateTime = new Date(`${eventDate}T${eventTime}`);
+  const now = new Date();
+
+  if (eventDateTime <= now) {
+    alert("You cannot create an event in the past.");
+    return;
+  }
+
+  // Read the uploaded image file
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const newEvent = {
+      id: events.length + 1,
+      name: eventTitle,
+      date: eventDate,
+      time: eventTime,
+      place: eventPlace,
+      description: eventDescription,
+      image: e.target.result,
+      price: parseFloat(eventPrice),
+      placesAvailable: parseInt(eventPlaces), // Add placesAvailable
+      placesBought: 0, // Initialize placesBought to 0
+    };
+
+    // Add the new event to the events array
+    events.push(newEvent);
+
+    // Save the updated events array to localStorage
+    localStorage.setItem("events", JSON.stringify(events));
+
+    // Re-render the events
+    renderEvents(events);
+
+    // Clear the form and close the modal
+    document.getElementById("create-event-form").reset();
+    closeModal();
+  };
+  reader.readAsDataURL(eventImageFile); // Convert the image file to a data URL
+});
+
+// Modal Functions
+function openModal() {
+  document.getElementById("create-event-modal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("create-event-modal").style.display = "none";
+}
+
+// Check if user is logged in
+const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if (!loggedInUser) {
+  alert("Please log in to access the feed.");
+  window.location.href = "login.html"; // Redirect to login page
+} else {
+  console.log("Logged in user:", loggedInUser);
+
+  // Populate the My Account dropdown
+  const accountDropdown = document.getElementById("account-dropdown");
+  accountDropdown.innerHTML = `
+    <h3 style="text-align:center">${loggedInUser.firstName} ${loggedInUser.lastName}</h3>
+    <a href="#" onclick="changePassword()">Change Password</a>
+    <a href="#" onclick="logout()">Logout</a>
+  `;
+}
+
+// Change Password Function
+function changePassword() {
+  const newPassword = prompt("Enter your new password:");
+  if (newPassword && newPassword.length >= 8) {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.email === loggedInUser.email);
+
+    if (userIndex !== -1) {
+      users[userIndex].password = newPassword;
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("Password changed successfully!");
+    }
+  } else {
+    alert("Password must be at least 8 characters long.");
+  }
+}
+
+// Logout Function
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "login.html"; // Redirect to login page
+}
+
+// Filter Events Function
+function filterEvents() {
+  const searchText = document.getElementById("search").value.toLowerCase();
+  const dateFilter = document.getElementById("date-filter").value;
+  const placeFilter = document.getElementById("place-filter").value;
+
+  const filteredEvents = events.filter((event) => {
+    const matchesSearch = event.name.toLowerCase().includes(searchText);
+    const matchesDate = dateFilter ? event.date === dateFilter : true;
+    const matchesPlace = placeFilter ? event.place === placeFilter : true;
+
+    return matchesSearch && matchesDate && matchesPlace;
+  });
+
+  renderEvents(filteredEvents);
+}
+
+// Initial Render
+renderEvents(events);
+
+// Event Listeners for Filters
+document.getElementById("apply-filters").addEventListener("click", filterEvents);
+document.getElementById("search").addEventListener("input", filterEvents);
+document.getElementById("date-filter").addEventListener("change", filterEvents);
+document.getElementById("place-filter").addEventListener("change", filterEvents);
+</script>
+</body>
+</html>

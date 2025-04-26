@@ -1,0 +1,298 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #333366;
+}
+
+/* Navbar Styles */
+nav {
+  background-color: #333366;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  height: 10%;
+  justify-content: space-between;
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 1rem;
+  transition: transform 0.3s ease; /* Smooth transition for scaling */
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff6699;
+  transform: scale(1.1); /* Scale up by 10% */
+}
+nav ul li:hover {
+  transform: scale(1.1); /* Scale up by 10% */
+}
+
+/* Style for the selected link */
+nav ul li a.selected {
+  color: #ff6699; /* Pink color for the selected link */
+}
+
+nav ul li a:active {
+  color: #ff6699;
+}
+
+/* Section Styles */
+section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+#welcome {
+  background: url("./images/58df4def-8ef0-4d05-a97e-b4eedcc1d3c3.jpeg");
+  color: white;
+  animation: fadeIn 2s ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: fit-content;
+  padding: 0 !important;
+  height: fit-content;
+}
+.background-welcome {
+  background-color: rgba(0, 0, 0, 0.53);
+  height: inherit;
+
+  padding: 4rem 2rem;
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-start;
+}
+.description {
+  font-size: 1.2rem;
+  text-align: center;
+  align-self: flex-start;
+}
+
+.typing-animation {
+  width: max-content;
+}
+
+#typing-text {
+  color: #ff6699; /* Highlight color for the typing text */
+  font-weight: bold;
+  border-right: white solid 1px;
+  padding: 0px 10px;
+}
+/* Welcome Section Buttons */
+.welcome-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-self: center;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn.sign-in {
+  background-color: #333366;
+}
+
+.btn.register {
+  background-color: #ff6699;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.btn.sign-in:hover {
+  background-color: #2a2a4d; /* Darker shade of #333366 */
+}
+
+.btn.register:hover {
+  background-color: #e65c8e; /* Darker shade of #FF6699 */
+}
+#about,
+#team,
+#technologies {
+  background-color: white;
+  color: #333366;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333366;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Team and Technologies Styles */
+
+.team-members,
+.tech-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.team-members div,
+.tech-list div {
+  background-color: #333366;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 150px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.team-members div:hover,
+.tech-list div:hover {
+  transform: scale(1.1);
+  background-color: #ff6699;
+}
+
+/* Team Section Styles */
+.team-members {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.member {
+  position: relative;
+  text-align: center;
+  width: 150px;
+  cursor: pointer;
+}
+
+.member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover; /* Ensure the image fits well */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member:hover img {
+  transform: scale(1.1); /* Slightly enlarge the image on hover */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
+}
+
+.member .info {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333366;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.member:hover .info {
+  opacity: 1;
+  visibility: visible;
+}
+
+.member h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ff6699;
+}
+
+.member .role {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.member .quote {
+  margin: 0;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+/* Technologies Section */
+.tech-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.tech-list div {
+  background-color: #333366;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 150px;
+  text-align: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.tech-list div:hover {
+  transform: scale(1.1);
+  background-color: #ff6699;
+}
+
+.tech-list i {
+  font-size: 3rem; /* Icon size */
+  margin-bottom: 0.5rem;
+}
+
+.tech-list p {
+  margin: 0;
+  font-size: 1.2rem;
+}

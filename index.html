@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniEvents</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+    <link rel="icon" href="images/icon.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <img
+        src="/images/logo-removebg-preview.png"
+        style="width: fit-content; height: 25px"
+      />
+      <ul>
+        <li><a href="#welcome" onclick="setActive(this)">Home</a></li>
+        <li><a href="#about" onclick="setActive(this)">About</a></li>
+        <li><a href="#team" onclick="setActive(this)">Team</a></li>
+        <li>
+          <a href="#technologies" onclick="setActive(this)">Technologies</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Welcome Section -->
+    <section id="welcome">
+      <div class="background-welcome">
+        <h1 class="typing-animation">
+          UniEvents is <span id="typing-text">good</span>
+        </h1>
+        <p class="description">
+          This project was developed in response to the requirements of our
+          subject,
+          <strong>Integrated Project</strong>, at
+          <strong>Esprit School of Business</strong>.
+        </p>
+        <div class="welcome-buttons">
+          <a href="login.html" class="btn sign-in">Login</a>
+          <a href="register.html" class="btn register">Register</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="fade-in">
+      <h2>About UniEvents</h2>
+      <p>
+        UniEvents is a platform designed to help people join events or create
+        their own. Whether you're organizing a meetup, workshop, or social
+        gathering, UniEvents makes it easy to connect with others and manage
+        your events efficiently.
+      </p>
+    </section>
+    <!-- Team Section -->
+    <section id="team" class="fade-in">
+      <h2>Our Team</h2>
+      <div class="team-members">
+        <!-- Member 1 -->
+        <div class="member">
+          <img src="./images/mohamed.jpg" alt="Member 1" />
+          <div class="info">
+            <h3>SALHI Mohamed</h3>
+            <p class="role">Frontend Developer</p>
+            <p class="quote">
+              "Code is like humor. When you have to explain it, it’s bad."
+            </p>
+          </div>
+        </div>
+
+        <!-- Member 2 -->
+        <div class="member">
+          <img src="./images/yomna.jpeg" alt="Member 2" />
+          <div class="info">
+            <h3>BOUCHOUCHA Yomna</h3>
+            <p class="role">Event Manager</p>
+            <p class="quote">
+              "Events are the best way to bring people together."
+            </p>
+          </div>
+        </div>
+
+        <!-- Member 3 -->
+        <div class="member">
+          <img src="./images/souha pic.jpeg" alt="Member 3" />
+          <div class="info">
+            <h3>DHAOUADI Souha</h3>
+            <p class="role">UI/UX Designer</p>
+            <p class="quote">
+              "Design is not just what it looks like, it's how it works."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies" class="fade-in">
+      <h2>Technologies Used</h2>
+      <div class="tech-list">
+        <div>
+          <i class="fab fa-html5"></i>
+          <p>HTML</p>
+        </div>
+        <div>
+          <i class="fab fa-css3-alt"></i>
+          <p>CSS</p>
+        </div>
+        <div>
+          <i class="fab fa-js"></i>
+          <p>JavaScript</p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
